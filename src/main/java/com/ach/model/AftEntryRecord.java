@@ -17,7 +17,7 @@ public class AftEntryRecord {
     private String toBankRoutingNumber;     // Format: Institution (3 digits) + Branch (5 digits)
     private BigDecimal amount;              // In dollars
     private String receiverName;
-    private LocalDate effectiveDate;
+    private String effectiveDate;
 
     public String toRecordString() {
         StringBuilder sb = new StringBuilder();
@@ -29,7 +29,7 @@ public class AftEntryRecord {
         sb.append(String.format("%9s", toBankRoutingNumber)); // 3 (inst) + 5 (branch) = 8, pad to 9
         sb.append(String.format("%010d", amount.movePointRight(2).intValue())); // amount in cents, 10 chars
         sb.append(String.format("%-20s", receiverName)); // Receiver name, padded
-        sb.append(effectiveDate.format(DateTimeFormatter.ofPattern("yyyyMMdd"))); // Effective date
+        sb.append(effectiveDate); // Effective date
 
         return sb.toString();
     }

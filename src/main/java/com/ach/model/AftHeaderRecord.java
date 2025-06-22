@@ -5,12 +5,17 @@ import java.time.format.DateTimeFormatter;
 
 import com.ach.dto.AftFileHeaderDto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 @Data
-
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class AftHeaderRecord {
     private String institutionNumber; // 3-digit (e.g., 828)
-    private LocalDate fileDate;
+    private String batchNumber;         // e.g., 00000001
+
+    private String fileDate;
 
     public String toRecordString() {
         StringBuilder sb = new StringBuilder();
@@ -20,7 +25,7 @@ public class AftHeaderRecord {
         sb.append("00000001"); // Batch number
         sb.append("BATCHHEADER");
         sb.append(String.format("%-25s", "")); // Reserved
-        sb.append(fileDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+        sb.append(fileDate);
         return sb.toString();
     }
 }

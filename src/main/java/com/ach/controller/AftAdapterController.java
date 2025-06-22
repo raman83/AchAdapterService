@@ -21,47 +21,25 @@ import com.ach.dto.AftSettlementTriggerEvent;
 import com.ach.mapper.AftRecordMapper;
 import com.ach.model.AftEntryRecord;
 import com.ach.producer.SettlementEventProducer;
+import com.ach.service.AftBatchProcessor;
 import com.ach.service.AftFileBuilder;
 
 import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/aft")
-@RequiredArgsConstructor
 public class AftAdapterController {
 
-    private final AftFileBuilder aftFileBuilder;
-    private final SettlementEventProducer settlementEventProducer;
+    private final AftBatchProcessor processor;
 
     @PostMapping("/generate")
     public ResponseEntity<String> generateAftFile(@RequestBody AftBatchRequest request) {
-        List<AftEntryRecord> entries = request.getPayments().stream()
-                .map(AftRecordMapper::toEntryRecord)
-                .toList();
-
-        String fileContent = aftFileBuilder.buildAftFile(entries, request.getHeader());
-        String fileName = "AFT_" + UUID.randomUUID() + ".txt";
-
         try {
-            Path outputDir = Path.of("batches");
-            Files.createDirectories(outputDir);
-            Files.writeString(outputDir.resolve(fileName), fileContent);
+            String fileContent = processor.process(request);
+            return ResponseEntity.ok(fileContent);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("File write error");
         }
-
-        // Simulate delayed publishing of settlement trigger event
-        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        executor.schedule(() -> {
-            AftSettlementTriggerEvent event = new AftSettlementTriggerEvent(
-                fileName,
-                request.getHeader().getFileDate(),
-                entries.size(),"payment.ready-for-settlement"
-            );
-            settlementEventProducer.publish(event);
-            System.out.println("✅ Published payment.ready-for-settlement event: " + event);
-        }, 5, TimeUnit.SECONDS);
-
-        return ResponseEntity.ok(fileContent);
     }
 }

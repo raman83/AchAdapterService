@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AftSettlementTriggerEvent {
     private String fileName;
-    private LocalDate batchDate;
+    private String batchDate;
     private int recordCount;
     private String eventType = "payment.ready-for-settlement";
 }

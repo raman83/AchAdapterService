@@ -19,4 +19,7 @@ spring:
 
 kafka:
   topic:
-    settlement: payment.settlement.ready
+    settlement: payment.ready-for-settlement
+    
+  billtopic:
+    settlement: billpayment.ready-for-settlement

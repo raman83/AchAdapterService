@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import com.ach.dto.AftFileHeaderDto;
+import com.batch.dto.AftFileHeaderDto;
 
 import lombok.Data;
 

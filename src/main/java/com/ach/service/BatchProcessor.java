@@ -1,10 +1,15 @@
 package com.ach.service;
 
-import com.ach.dto.AftBatchRequest;
-import com.ach.dto.AftSettlementTriggerEvent;
 import com.ach.mapper.AftRecordMapper;
+import com.ach.mapper.BillRecordMapper;
 import com.ach.model.AftEntryRecord;
 import com.ach.producer.SettlementEventProducer;
+import com.batch.dto.AftBatchRequest;
+import com.batch.dto.AftSettlementTriggerEvent;
+import com.batch.dto.BillBatchRequest;
+import com.batch.dto.BillPaymentRequest;
+import com.batch.dto.BillSettlementTriggerEvent;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +23,11 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
-public class AftBatchProcessor {
+public class BatchProcessor {
 
     private final AftFileBuilder aftFileBuilder;
+    private final BillFileBuilder billFileBuilder;
+
     private final SettlementEventProducer settlementEventProducer;
 
     public String process(AftBatchRequest request) throws IOException {
@@ -31,7 +38,7 @@ public class AftBatchProcessor {
         String fileContent = aftFileBuilder.buildAftFile(entries, request.getHeader());
         String fileName = "AFT_" + UUID.randomUUID() + ".txt";
 
-        Path outputDir = Path.of("batches");
+        Path outputDir = Path.of("/Users/reyansh/Desktop/raman/Auth/batch");
         Files.createDirectories(outputDir);
         Files.writeString(outputDir.resolve(fileName), fileContent);
 
@@ -49,4 +56,30 @@ public class AftBatchProcessor {
 
         return fileContent;
     }
+    
+    
+    public String processBillBatch(BillBatchRequest request) throws IOException {
+        List<BillPaymentRequest> entries = request.getPayments();
+        
+        
+        String fileContent = billFileBuilder.buildFile(entries, request.getHeader());
+        String fileName = "BILL_" + UUID.randomUUID() + ".txt";
+
+        Path outputDir = Path.of("/Users/reyansh/Desktop/raman/Auth/batch");
+        Files.createDirectories(outputDir);
+        Files.writeString(outputDir.resolve(fileName), fileContent);
+
+        Executors.newSingleThreadScheduledExecutor().schedule(() -> {
+            BillSettlementTriggerEvent event = new BillSettlementTriggerEvent(
+                fileName,
+                request.getHeader().getFileDate(),
+                entries.size(),
+                "billpayment.ready-for-settlement"
+            );
+            settlementEventProducer.publishBill(event);
+        }, 5, TimeUnit.SECONDS);
+
+        return fileContent;
+    }
+    
 }

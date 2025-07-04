@@ -1,7 +1,7 @@
 package com.ach.mapper;
 
-import com.ach.dto.AftPaymentRequest;
 import com.ach.model.AftEntryRecord;
+import com.batch.dto.AftPaymentRequest;
 
 public class AftRecordMapper {
     public static AftEntryRecord toEntryRecord(AftPaymentRequest request) {

@@ -1,8 +1,8 @@
-package com.ach.dto;
+package com.batch.dto;
 
 import java.time.LocalDate;
 
-import com.ach.service.AftBatchProcessor;
+import com.ach.service.BatchProcessor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

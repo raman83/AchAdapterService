@@ -1,4 +1,4 @@
-package com.ach.dto;
+package com.batch.dto;
 
 import java.util.List;
 

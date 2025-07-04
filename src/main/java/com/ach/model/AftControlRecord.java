@@ -3,7 +3,7 @@ package com.ach.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.ach.dto.AftFileHeaderDto;
+import com.batch.dto.AftFileHeaderDto;
 
 import lombok.Data;
 @Data

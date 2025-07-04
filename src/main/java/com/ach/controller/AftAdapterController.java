@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ach.dto.AftBatchRequest;
-import com.ach.dto.AftSettlementTriggerEvent;
 import com.ach.mapper.AftRecordMapper;
 import com.ach.model.AftEntryRecord;
 import com.ach.producer.SettlementEventProducer;
-import com.ach.service.AftBatchProcessor;
+import com.ach.service.BatchProcessor;
 import com.ach.service.AftFileBuilder;
+import com.batch.dto.AftBatchRequest;
+import com.batch.dto.AftSettlementTriggerEvent;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/aft")
 public class AftAdapterController {
 
-    private final AftBatchProcessor processor;
+    private final BatchProcessor processor;
 
     @PostMapping("/generate")
     public ResponseEntity<String> generateAftFile(@RequestBody AftBatchRequest request) {

@@ -1,6 +1,4 @@
-package com.ach.dto;
-
-import java.time.LocalDate;
+package com.batch.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

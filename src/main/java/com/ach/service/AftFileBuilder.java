@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.ach.dto.AftFileHeaderDto;
 import com.ach.model.AftControlRecord;
 import com.ach.model.AftEntryRecord;
 import com.ach.model.AftHeaderRecord;
+import com.batch.dto.AftFileHeaderDto;
 
 @Service
 public class AftFileBuilder {

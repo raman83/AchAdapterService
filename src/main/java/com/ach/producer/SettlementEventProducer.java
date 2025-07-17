@@ -13,9 +13,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SettlementEventProducer {
 
-    private final KafkaTemplate<String, AftSettlementTriggerEvent> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
     
-    private final KafkaTemplate<String, BillSettlementTriggerEvent> billkafkaTemplate;
 
 
     @Value("${kafka.topic.settlement}")
@@ -31,6 +30,6 @@ public class SettlementEventProducer {
     }
     
     public void publishBill(BillSettlementTriggerEvent event) {
-    	billkafkaTemplate.send(billtopic, event.getFileName(), event);
+    	kafkaTemplate.send(billtopic, event.getFileName(), event);
     }
 }

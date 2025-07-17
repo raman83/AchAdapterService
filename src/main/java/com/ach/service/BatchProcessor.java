@@ -38,7 +38,9 @@ public class BatchProcessor {
         String fileContent = aftFileBuilder.buildAftFile(entries, request.getHeader());
         String fileName = "AFT_" + UUID.randomUUID() + ".txt";
 
-        Path outputDir = Path.of("/Users/reyansh/Desktop/raman/Auth/batch");
+       // Path outputDir = Path.of("/Users/reyansh/Desktop/raman/Auth/batch");
+        Path outputDir = Path.of("/app/batch");
+
         Files.createDirectories(outputDir);
         Files.writeString(outputDir.resolve(fileName), fileContent);
 

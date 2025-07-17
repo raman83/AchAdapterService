@@ -21,7 +21,7 @@ public class PaymentBatchListener {
 
     private final BatchProcessor processor;
 
-    @KafkaListener(topics = "payment.batch.ready", groupId = "ach-group", containerFactory = "kafkaListenerContainerFactory")
+    @KafkaListener(topics = "payment.batch.ready", groupId = "ach-adapter-group", containerFactory = "kafkaListenerContainerFactory")
     public void handle(PaymentBatchReadyEvent event) {
         System.out.println("Consumed payment.batch.ready: " + event);
 

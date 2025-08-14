@@ -1,16 +1,14 @@
 package com.common.iso;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import lombok.*;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CanonicalPayment {
 	 private UUID paymentId;
 	    private String debtorName;

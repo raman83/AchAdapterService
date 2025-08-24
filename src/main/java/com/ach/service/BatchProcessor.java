@@ -39,7 +39,7 @@ public class BatchProcessor {
         String fileName = "AFT_" + UUID.randomUUID() + ".txt";
 
        // Path outputDir = Path.of("/Users/reyansh/Desktop/raman/Auth/batch");
-        Path outputDir = Path.of("/app/batch");
+        Path outputDir = Path.of("/Users/reyansh/Desktop/raman/Auth/batch");
 
         Files.createDirectories(outputDir);
         Files.writeString(outputDir.resolve(fileName), fileContent);
@@ -71,7 +71,6 @@ public class BatchProcessor {
         Files.createDirectories(outputDir);
         Files.writeString(outputDir.resolve(fileName), fileContent);
 
-        Executors.newSingleThreadScheduledExecutor().schedule(() -> {
             BillSettlementTriggerEvent event = new BillSettlementTriggerEvent(
                 fileName,
                 request.getHeader().getFileDate(),
@@ -79,7 +78,7 @@ public class BatchProcessor {
                 "billpayment.ready-for-settlement"
             );
             settlementEventProducer.publishBill(event);
-        }, 5, TimeUnit.SECONDS);
+      
 
         return fileContent;
     }
